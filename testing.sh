@@ -9,16 +9,16 @@
 ##### Constantes
 
 
-TITLE="Información del sistema para $HOSTNAME"
-RIGHT_NOW=$(date +"%x %r%Z")
-TIME_STAMP="Actualizada el $RIGHT_NOW por $USER"
+TITLE="Información del sistema para $HOSTNAME" # $HOSTNAME muestra el nombre del host
+RIGHT_NOW=$(date +"%x %r%Z") # date muestra la fecha y hora actual
+TIME_STAMP="Actualizada el $RIGHT_NOW por $USER" # muestra el nombre del usuario actual con la fecha y hora actual
 
 ##### Estilos
 
-TEXT_BOLD=$(tput bold)
-TEXT_GREEN=$(tput setaf 2)
-TEXT_RESET=$(tput sgr0)
-TEXT_ULINE=$(tput sgr 0 1)
+TEXT_BOLD=$(tput bold) # tput bold hace que el texto sea negrita
+TEXT_GREEN=$(tput setaf 2) # tput setaf 2 hace que el texto sea verde
+TEXT_RESET=$(tput sgr0) # tput sgr0 hace que el texto sea normal
+TEXT_ULINE=$(tput sgr 0 1) # tput sgr 0 1 hace que el texto sea subrayado
 
 ##### Funciones
 
@@ -27,7 +27,7 @@ system_info()
 	# Función de stub temporal
 	echo "${TEXT_ULINE}Versión del sistema${TEXT_RESET}"
 	echo
-	uname -a
+	uname -a # uname muestra información sobre el sistema
         echo "----------------------------------------------------"
 
 }
@@ -37,7 +37,7 @@ show_uptime()
 {
 	# Función de stub temporal
 	echo "${TEXT_ULINE}Tiempo de encendido del sistma${TEXT_RESET}"
-	echo $(uptime)
+	echo $(uptime) # uptime muestra el tiempo que lleva el sistema encendido
 	echo "----------------------------------------------------"
 }
 
@@ -46,23 +46,10 @@ drive_space()
 {
 	# Función de stub temporal
 	echo "${TEXT_ULINE}Espacio ocupado del sistema${TEXT_RESET}"
-	echo $(df -h | tr -s ' ' | cut -d ' ' -f 2,6)
+	echo $(df -h | tr -s ' ' | cut -d ' ' -f 2,6) # df -h muestra el espacio ocupado en el sistema
         echo "----------------------------------------------------"
 	
 }
-
-
-#home_space()
-# {
-	# Función de stub temporal
- #       echo "${TEXT_ULINE}Espacio ocupado del sistema${TEXT_RESET}"
-#	if [ "$(whoami)" != "root" ]; then
-#		echo $(du $HOME -c | tail -n 1 | cut -f1)
-#		return 1
-#	fi 
-#	echo "ejecutar para todos"
-
-#}
 
 home_space()
 {
@@ -72,20 +59,20 @@ home_space()
     echo
 
     # Verificar si el usuario es root
-    if [ "$(whoami)" != "root" ]; then
-            size=$(du -sh "$HOME" | awk '{print $1}')
-            dir_name=$(basename "$HOME")
-			echo "Almacen Usuario"
+    if [ "$(whoami)" != "root" ]; then # si el usuario no es root entonces solo mostrar el espacio ocupado por su directorio
+            size=$(du -sh "$HOME" | awk '{print $1}') # du -sh muestra el espacio ocupado por el directorio en el que se encuentra
+            dir_name=$(basename "$HOME") # basename muestra el nombre del directorio en el que se encuentra
+			echo "Almacen Usuario" 
             echo "$size  $dir_name"
         return 1
     fi
 
     # Iterar a través de los subdirectorios en /home y mostrar el espacio ocupado
-    for dir in /home/*; do
-        if [ -d "$dir" ]; then
-            size=$(du -sh "$dir" | awk '{print $1}')
-            dir_name=$(basename "$dir")
-            echo "$size  $dir_name"
+    for dir in /home/*; do # * significa que se iterará a través de todos los subdirectorios
+        if [ -d "$dir" ]; then # -d significa que es un directorio
+            size=$(du -sh "$dir" | awk '{print $1}') # du -sh muestra el espacio ocupado por el directorio en el que se encuentra
+            dir_name=$(basename "$dir") # basename muestra el nombre del directorio en el que se encuentra
+            echo "$size  $dir_name" 
         fi
     done
 
