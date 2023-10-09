@@ -1,4 +1,5 @@
-[comment]: <> (<xdg-opn "fichero.txt" - para abrir un fichero con la terminal> )
+[comando para abrir ficheros por terminal]: <> (<xdg-opn "fichero.txt")
+[comando para abrir ficheros por terminal en visual]: <> (code "fichero.txt")
 
 # Bucle de impresiones de root
 ```bash
