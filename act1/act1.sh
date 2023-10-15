@@ -32,6 +32,31 @@ shift(){
     echo "La función '-sto' fue llamada con argumentos: $@"
   fi
   echo "$2"
+
+  if [ -d "scdebug" ]; then # comprobar que la carpeta scdebug existe
+    echo "La carpeta scdebug existe."
+  else
+    #echo "La carpeta scdebug no existe."
+    echo "mkdir scdebug"
+    $(mkdir scdebug )
+  fi
+
+  echo "el programa es $4"
+
+  if [ -d "scdebug/$4" ]; then # comprobar que la carpeta scdebug/$1 existe
+    echo "La carpeta $4 existe."
+  else
+    #echo "La carpeta $4 no existe."
+    echo "mkdir scdebug/$4"
+    $(mkdir scdebug/$4 )
+  fi
+  uuid=$(uuidgen)
+  echo "dolar $4"
+  PID=$(ps | grep $4 | tr -s ' ' | cut -d ' ' -f2)
+  echo "el pid es $PID"
+  echo "strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt "
+  #$(strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt )
+
 }
 
 verbose(){
@@ -50,20 +75,20 @@ programa() {
     echo "La función 'prog' fue llamada con argumentos: $@"
   fi
 
-  if [ -d "/scdebug" ]; then # comprobar que la carpeta scdebug existe
+  if [ -d "scdebug" ]; then # comprobar que la carpeta scdebug existe
     echo "La carpeta scdebug existe."
   else
     echo "La carpeta scdebug no existe."
     echo "mkdir scdebug"
-    $(mkdir scdebug 2> /dev/null)
+    $(mkdir scdebug )
   fi
 
-  if [ -d "/scdebug/$1" ]; then # comprobar que la carpeta scdebug/$1 existe
+  if [ -d "scdebug/$1" ]; then # comprobar que la carpeta scdebug/$1 existe
     echo "La carpeta $1 existe."
   else
     echo "La carpeta $1 no existe."
     echo "mkdir scdebug/$1"
-    $(mkdir scdebug/$1 2> /dev/null)
+    $(mkdir scdebug/$1 )
   fi
 
   uuid=$(uuidgen)
