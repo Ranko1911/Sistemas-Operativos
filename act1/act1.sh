@@ -41,6 +41,11 @@ shift(){
     $(mkdir scdebug )
   fi
 
+  # si $4 es igual a prog imprimir hola
+  if [ "$3" = "prog" ]; then
+    echo "holaAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  fi
+
   echo "el programa es $4"
 
   if [ -d "scdebug/$4" ]; then # comprobar que la carpeta scdebug/$1 existe
