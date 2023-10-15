@@ -18,17 +18,20 @@ TEXT_ULINE=$(tput sgr 0 1) # tput sgr 0 1 hace que el texto sea subrayado
 
 ##### Funciones
 
-programaArgumentado(){ # esta funcion hace lo mismo que programa pero cambiando los argumentos de strace
-  echo "programaArgumentado $@"
-}
-
 usage()
 {
   echo "Usage: scdebug [-h] [-sto arg] [-v | -vall] [-nattch progtoattach] [prog [command][arg1 …]]"
 }
 
 shift(){
-  echo "shift"
+  # la funcion -sto fue llamada con argumentos
+  if [ $# -eq 0 ]; then
+    echo "La función '-sto' fue llamada sin argumentos."
+    exit 1
+  else
+    echo "La función '-sto' fue llamada con argumentos: $@"
+  fi
+  echo "$2"
 }
 
 verbose(){
@@ -82,8 +85,7 @@ while [ "$1" != "" ]; do
       exit
       ;;
     -sto | --stop )
-      shift
-      programaArgumentado "${@:3}"
+      shift "$@"
       exit
       ;;
     -v | -vall )            
