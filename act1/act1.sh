@@ -41,29 +41,57 @@ shift(){
     $(mkdir scdebug )
   fi
 
-  # si $4 es igual a prog imprimir hola
+
   if [ "$3" = "prog" ]; then
-    echo "holaAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    echo "se ejecuta prog"
+    echo "el programa es $4"
+
+    if [ -d "scdebug/$4" ]; then # comprobar que la carpeta scdebug/$1 existe
+      echo "La carpeta $4 existe."
+    else
+      #echo "La carpeta $4 no existe."
+      echo "mkdir scdebug/$4"
+      $(mkdir scdebug/$4 )
+    fi
+
+    uuid=$(uuidgen)
+    echo "dolar4 ${@:4}"
+    $( ${@:4} ) &
+    PID=$( ps | grep $4 | tr -s ' ' | cut -d ' ' -f2 )
+    echo "el pid es..."
+    echo " $PID"
+    echo "strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt "
+    $(strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt )
   fi
 
-  echo "el programa es $4"
+  #si $3 es -nattch imprimir nache
+  #ps -eo pid,ppid,cmd,start --sort=-start --no-header  |head -n 1
+  #ps aux | grep sleep | sort -k 9 | tail -n 1
+  #ps aux | grep sleep | sort -k 9 | tail -n 2 | head -n 1 | tr -s ' ' | cut -d ' ' -f2 --- si no hago esto sale el grep como el m'as reciente
+  if [ "$3" = "-nattch" ]; then
+    echo "se ejecuta nattch"
+    echo "el programa es $4"
 
-  if [ -d "scdebug/$4" ]; then # comprobar que la carpeta scdebug/$1 existe
-    echo "La carpeta $4 existe."
-  else
-    #echo "La carpeta $4 no existe."
-    echo "mkdir scdebug/$4"
-    $(mkdir scdebug/$4 )
+    if [ -d "scdebug/$4" ]; then # comprobar que la carpeta scdebug/$1 existe
+      echo "La carpeta $4 existe."
+    else
+      #echo "La carpeta $4 no existe."
+      echo "mkdir scdebug/$4"
+      $(mkdir scdebug/$4 )
+    fi
+
+    uuid=$(uuidgen)
+    echo "dolar4 ${@:4}"
+    PID=$( ps aux | grep sleep | sort -k 9 | tail -n 2 | head -n 1 | tr -s ' ' | cut -d ' ' -f2 )
+    echo "el pid es..."
+    echo " $PID"
+    echo "strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt "
+
   fi
 
-  uuid=$(uuidgen)
-  echo "dolar4 ${@:4}"
-  $( ${@:4} ) &
-  PID=$( ps | grep $4 | tr -s ' ' | cut -d ' ' -f2 )
-  echo "el pid es..."
-  echo " $PID"
-  echo "strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt "
-  $(strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt )
+  
+
+  
 
 }
 
