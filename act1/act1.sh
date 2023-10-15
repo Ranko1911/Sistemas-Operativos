@@ -64,8 +64,8 @@ programa() {
   fi
 
   uuid=$(uuidgen)
-  echo "strace -o scdebug/$1/trace_$uuid.txt $@ &"
-  $(strace -o scdebug/$1/trace_$uuid.txt $@ &)
+  echo "strace -o scdebug/$1/trace_$uuid.txt $@"
+  $(strace -o scdebug/$1/trace_$uuid.txt $@)
 }
 
 if [ $# -eq 0 ]; then
