@@ -50,12 +50,15 @@ shift(){
     echo "mkdir scdebug/$4"
     $(mkdir scdebug/$4 )
   fi
+
   uuid=$(uuidgen)
-  echo "dolar $4"
-  PID=$(ps | grep $4 | tr -s ' ' | cut -d ' ' -f2)
-  echo "el pid es $PID"
+  echo "dolar4 ${@:4}"
+  $( ${@:4} ) &
+  PID=$( ps | grep $4 | tr -s ' ' | cut -d ' ' -f2 )
+  echo "el pid es..."
+  echo " $PID"
   echo "strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt "
-  #$(strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt )
+  $(strace $2 -p $PID -o scdebug/$4/trace_$uuid.txt )
 
 }
 
