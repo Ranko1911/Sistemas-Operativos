@@ -23,7 +23,7 @@ usage()
   echo "Usage: scdebug [-h] [-sto arg] [-v | -vall] [-nattch progtoattach] [prog [command][arg1 …]]"
 }
 
-shift(){
+stooo(){
   # la funcion -sto fue llamada con argumentos
   if [ $# -eq 0 ]; then
     echo "La función '-sto' fue llamada sin argumentos."
@@ -121,13 +121,11 @@ nache(){
   fi
 
     uuid=$(uuidgen)
-    echo $(ps aux | grep $1 | sort -k 4 | tail -n 4 | head -n 1 | tr -s ' ' | cut -d ' ' -f2  )
-    PID=$( ps aux | grep $1 | sort -k 4 | tail -n 4 | head -n 1 | tr -s ' ' | cut -d ' ' -f2  )
+    echo $(ps aux | grep $1 | tr -s ' ' | cut -d ' ' -f2)
+    echo "cual quiere seleccionar?:"
+    read $PID
+    echo "strace -p $PID -o scdebug/$1/trace_$uuid.txt "
 
-    echo "el pid es..."
-    echo " $PID"
-    echo "strace -p $PID -o scdebug/$1/trace_$uuid.txt"
-    $(strace -p $PID -o scdebug/$1/trace_$uuid.txt)
 
 }
 
@@ -174,7 +172,7 @@ while [ "$1" != "" ]; do
       exit
       ;;
     -sto | --stop )
-      shift "$@"
+      stooo "$@"
       exit
       ;;
     -v | -vall )            
